@@ -606,6 +606,11 @@ div.dragonBlock > section > div > section{
     }
 }
 div.dragonBlock > section > div > section > div{
+    width: 100% !important;
+    height: 100% !important;
+    position: relative !important;
+}
+div.dragonBlock > section > div > section > div > section{
     width: calc(100% - 14px) !important;
     max-width: 340px !important;
     height: 240px !important;
