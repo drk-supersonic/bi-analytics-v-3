@@ -559,7 +559,7 @@ div.dragonBlock > section{
     background-color: gold !important;
 }
 div.dragonBlock > section > div{
-    width: 10px !important;
+    width: 0 !important;
     height: calc(100vh - 14px) !important;
     height: calc(100svh - 14px) !important;
     position: relative !important;
@@ -568,24 +568,22 @@ div.dragonBlock > section > div{
     justify-content: flex-end !important;
     align-items: flex-end !important; */
     box-shadow: 0 0 0 4px blue !important;
-    pointer-events: auto !important;
+
 }
 div.dragonBlock > section > div > section{
-    height: 80px !important;
-
-
+    height: 40px !important;
     position: absolute !important;
     z-index: 5000000 !important;
     top: auto !important;
     right: 100% !important;
     bottom: 0 !important;
     left: unset !important;
-    /* transform: translateX(-100%) !important; */
     display: flex !important;
     flex-direction: row !important;
     justify-content: center !important;
     align-items: center !important;
     margin: auto 0 auto auto !important;
+    pointer-events: auto !important;
 
     box-shadow: 0 0 0 4px gold !important;
 }
