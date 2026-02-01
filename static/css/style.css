@@ -549,3 +549,8 @@ div.dragonBlock{
         width: 1200px;
     }
 }
+div.dragonBlock > section{
+    width: 100% !important;
+    height: 100% !important;
+    background-color: gold !important;
+}
