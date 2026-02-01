@@ -6919,7 +6919,7 @@ def main():
             st.rerun()
         st.stop()
 
-    st.markdown("""<div class='dragonBlock'><section><div></div></section></div>""", unsafe_allow_html=True)
+    st.markdown("""<div class='dragonBlock'><section><div><section></section></div></section></div>""", unsafe_allow_html=True)
 
     st.markdown('<h1 class="main-header">📊 Панель аналитики проектов</h1>', unsafe_allow_html=True)
 

@@ -534,19 +534,19 @@ div.dragonBlock{
 @media only screen and (min-width: 0px) and (max-width: 768px){
 
     div.dragonBlock{
-        width: calc(100% - 34px);
+        width: calc(100% - 34px) !important;
     }
 }
 @media only screen and (min-width: 768.1px) and (max-width: 1260px){
 
     div.dragonBlock{
-        width: 700px;
+        width: 700px !important;
     }
 }
 @media (min-width: 1260.1px){
 
     div.dragonBlock{
-        width: 1200px;
+        width: 1200px !important;
     }
 }
 div.dragonBlock > section{
@@ -559,9 +559,35 @@ div.dragonBlock > section{
     background-color: gold !important;
 }
 div.dragonBlock > section > div{
-    width: 40px !important;
+    width: 10px !important;
     height: calc(80vh - 14px) !important;
     height: calc(80svh - 14px) !important;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: flex-end !important;
+    align-items: flex-end !important;
     box-shadow: 0 0 0 4px blue !important;
     pointer-events: auto !important;
+}
+div.dragonBlock > section > div > section{
+    height: 80px !important;
+    box-shadow: 0 0 0 4px gold !important;
+}
+@media only screen and (min-width: 0px) and (max-width: 768px){
+
+    div.dragonBlock > section > div > section{
+        width: calc(100% - 34px) !important;
+    }
+}
+@media only screen and (min-width: 768.1px) and (max-width: 1260px){
+
+    div.dragonBlock > section > div > section{
+        width: 700px !important;
+    }
+}
+@media (min-width: 1260.1px){
+
+    div.dragonBlock > section > div > section{
+        width: 1200px !important;
+    }
 }
