@@ -252,6 +252,8 @@ else:
 
     st.markdown("---")
 
+    st.divider()
+
     # Информация о демо-доступе
     # with st.expander("ℹ️ Демо-доступ", expanded=False):
     with st.container(border=True):
