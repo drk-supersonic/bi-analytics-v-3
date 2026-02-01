@@ -6889,13 +6889,21 @@ def main():
 
                 # Информация о демо-доступе
                 # with st.expander("ℹ️ Демо-доступ", expanded=False):
+                # with st.container(border=True):
+                #     st.markdown("""
+                #     **Тестовые учетные данные:**
+                #     - **Имя пользователя:** `admin`
+                #     - **Пароль:** `admin123`
+                #     - **Роль:** Суперадминистратор
+                #     """)
                 with st.container(border=True):
                     st.markdown("""
-                    **Тестовые учетные данные:**
+                    <div style='text-align: center;'><strong>Тестовые учетные данные:</strong></div>
+
                     - **Имя пользователя:** `admin`
                     - **Пароль:** `admin123`
                     - **Роль:** Суперадминистратор
-                    """)
+                    """, unsafe_allow_html=True)
 
         st.stop()
 
