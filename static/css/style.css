@@ -552,5 +552,15 @@ div.dragonBlock{
 div.dragonBlock > section{
     width: 100% !important;
     height: 100% !important;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: flex-end !important;
+    align-items: flex-start !important;
     background-color: gold !important;
+}
+div.dragonBlock > section > div{
+    width: 40px !important;
+    height: 80vh !important;
+    height: 80svh !important;
+    box-shadow: 0 0 0 4px blue !important;
 }
