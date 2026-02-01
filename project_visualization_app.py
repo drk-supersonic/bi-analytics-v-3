@@ -6842,13 +6842,13 @@ def main():
                     <style>
                         /* Убрать подсветку у text_input */
                         div[data-baseweb="input"] > div {
-                            border-color: rgba(49, 51, 63, 0.2) !important;
+                            border-color: blue !important;
                             box-shadow: none !important;
                         }
 
                         /* Убрать подсветку при фокусе */
                         div[data-baseweb="input"] > div:focus-within {
-                            border-color: rgba(49, 51, 63, 0.2) !important;
+                            border-color: blue !important;
                             box-shadow: none !important;
                         }
                     </style>
