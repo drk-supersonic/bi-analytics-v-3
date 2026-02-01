@@ -6870,9 +6870,9 @@ def main():
 
                 # st.markdown("---")
 
-                # st.markdown("<br><br>", unsafe_allow_html=True)
+                st.markdown("<br><br>", unsafe_allow_html=True)
 
-                st.divider()
+                # st.divider()
 
                 # Информация о демо-доступе
                 # with st.expander("ℹ️ Демо-доступ", expanded=False):
