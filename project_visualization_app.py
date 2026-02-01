@@ -5,6 +5,7 @@ import plotly.graph_objects as go
 from datetime import datetime, timedelta
 import numpy as np
 import csv
+from huggingface_hub import InferenceClient
 
 from auth import (
     check_authentication,
