@@ -6924,6 +6924,45 @@ def main():
 
     st.markdown('<h1 class="main-header">📊 Панель аналитики проектов</h1>', unsafe_allow_html=True)
 
+
+
+# AI помощник в боковой панели
+with st.sidebar:
+    st.markdown("---")
+    st.markdown("### 💬 AI Помощник")
+
+    if "chat_history" not in st.session_state:
+        st.session_state.chat_history = []
+
+    # Показываем историю
+    for msg in st.session_state.chat_history[-3:]:
+        if msg["role"] == "user":
+            st.markdown(f"**Вы:** {msg['content']}")
+        else:
+            st.markdown(f"**AI:** {msg['content']}")
+
+    # Ввод вопроса
+    question = st.text_input("Ваш вопрос:", key="ai_q")
+
+    if st.button("Спросить AI"):
+        if question:
+            with st.spinner("Думаю..."):
+                try:
+                    client = InferenceClient(token=st.secrets["HF_TOKEN"])
+                    answer = client.text_generation(
+                        f"Ты помощник. Ответь кратко на русском: {question}",
+                        model="mistralai/Mistral-7B-Instruct-v0.2",
+                        max_new_tokens=200
+                    )
+                    st.session_state.chat_history.append({"role": "user", "content": question})
+                    st.session_state.chat_history.append({"role": "assistant", "content": answer})
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"Ошибка: {e}")
+
+
+
+
     # Боковая панель с меню навигации
     render_sidebar_menu(current_page="reports")
 
