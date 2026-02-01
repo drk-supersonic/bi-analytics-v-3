@@ -6853,9 +6853,11 @@ def main():
                     # ИСПРАВЛЕНИЕ: убираем колонки, делаем кнопки одна под другой
                     st.markdown("<br>", unsafe_allow_html=True)
 
-                    submit_button = st.form_submit_button("🚀 Войти", type="primary", use_container_width=True)
+                    # submit_button = st.form_submit_button("🚀 Войти", type="primary", use_container_width=True)
+                    submit_button = st.form_submit_button("Войти", type="primary", use_container_width=True)
 
-                    submit_reset = st.form_submit_button("❓ Забыли пароль?", use_container_width=True)
+                    # submit_reset = st.form_submit_button("❓ Забыли пароль?", use_container_width=True)
+                    submit_reset = st.form_submit_button("Забыли пароль?", use_container_width=True)
 
                     st.markdown("<br>", unsafe_allow_html=True)
 

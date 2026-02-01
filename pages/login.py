@@ -237,10 +237,12 @@ else:
         st.markdown("<br>", unsafe_allow_html=True)  # Небольшой отступ
 
         # Кнопка "Войти" — на всю ширину, primary (красная/акцентная)
-        submit_login = st.form_submit_button("🚀 Войти", type="primary", use_container_width=True)
+        # submit_login = st.form_submit_button("🚀 Войти", type="primary", use_container_width=True)
+        submit_login = st.form_submit_button("Войти", type="primary", use_container_width=True)
 
         # Кнопка "Забыли пароль?" — на всю ширину, вторая по важности
-        submit_reset = st.form_submit_button("❓ Забыли пароль?", use_container_width=True)
+        # submit_reset = st.form_submit_button("❓ Забыли пароль?", use_container_width=True)
+        submit_reset = st.form_submit_button("Забыли пароль?", use_container_width=True)
 
         st.markdown("<br>", unsafe_allow_html=True)
 
