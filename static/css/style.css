@@ -562,6 +562,7 @@ div.dragonBlock > section > div{
     width: 10px !important;
     height: calc(80vh - 14px) !important;
     height: calc(80svh - 14px) !important;
+    position: relative !important;
     display: flex !important;
     flex-direction: row !important;
     justify-content: flex-end !important;
