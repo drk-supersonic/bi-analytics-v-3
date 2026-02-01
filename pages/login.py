@@ -253,8 +253,8 @@ else:
     st.markdown("---")
 
     # Информация о демо-доступе
-    with st.expander("ℹ️ Демо-доступ", expanded=False):
-        st.markdown("""
+    # with st.expander("ℹ️ Демо-доступ", expanded=False):
+    with st.markdown("""
         **Тестовые учетные данные:**
         - **Имя пользователя:** `admin`
         - **Пароль:** `admin123`
