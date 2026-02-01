@@ -202,8 +202,12 @@ else:
 
     # Форма входа
     with st.form("login_form", clear_on_submit=False):
-        st.markdown("### Вход в систему1")
-        st.markdown("---")
+
+        # st.markdown("### Вход в систему1")
+
+        st.markdown("<h3 style='text-align: center;'>Вход в систему</h3>", unsafe_allow_html=True)
+
+        # st.markdown("---")
 
         username = st.text_input(
             "👤 Имя пользователя",
