@@ -254,6 +254,7 @@ else:
 
     # Информация о демо-доступе
     # with st.expander("ℹ️ Демо-доступ", expanded=False):
+    with st.container(border=True):
         st.markdown("""
         **Тестовые учетные данные:**
         - **Имя пользователя:** `admin`
