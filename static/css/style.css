@@ -509,7 +509,7 @@ textarea:focus{
 
 div.dragonBlock{
     width: 100% !important;
-    height: 40px !important;
+    height: 10px !important;
 
     /* width: calc(100% - var(--Muqoneee)) !important; */
     /* width: 100% !important;
@@ -527,6 +527,7 @@ div.dragonBlock{
     opacity: 1 !important;
     transition: visibility 0s ease-in-out 0s, opacity 0s ease-in-out 0s !important; */
     will-change: transform !important;
+    pointer-events: none !important;
 
     box-shadow: 0 0 0 4px hotpink !important;
 }
