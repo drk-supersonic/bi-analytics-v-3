@@ -560,8 +560,8 @@ div.dragonBlock > section{
 }
 div.dragonBlock > section > div{
     width: 0 !important;
-    height: calc(100vh - 14px) !important;
-    height: calc(100svh - 14px) !important;
+    height: calc(100vh - 20px) !important;
+    height: calc(100svh - 20px) !important;
     position: relative !important;
 
     /* display: flex !important;
@@ -626,7 +626,8 @@ div.dragonBlock > section > div > section > div > section{
     justify-content: center !important;
     align-items: center !important;
     margin: auto auto 0 auto !important;
-    background-color: blue !important;
+    background-color: white !important;
+    border: 1px solid blue !important;
     border-radius: 4px !important;
     overflow: hidden !important;
 }
