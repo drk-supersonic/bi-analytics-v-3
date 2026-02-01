@@ -6838,6 +6838,22 @@ def main():
                     st.markdown('<input type="text" style="display:none" autocomplete="username">', unsafe_allow_html=True)
                     st.markdown('<input type="password" style="display:none" autocomplete="new-password">', unsafe_allow_html=True)
 
+                    st.markdown("""
+                    <style>
+                        /* Убрать подсветку у text_input */
+                        div[data-baseweb="input"] > div {
+                            border-color: rgba(49, 51, 63, 0.2) !important;
+                            box-shadow: none !important;
+                        }
+
+                        /* Убрать подсветку при фокусе */
+                        div[data-baseweb="input"] > div:focus-within {
+                            border-color: rgba(49, 51, 63, 0.2) !important;
+                            box-shadow: none !important;
+                        }
+                    </style>
+                    """, unsafe_allow_html=True)
+
                     username = st.text_input(
                         "👤 Имя пользователя",
                         key="login_username",
