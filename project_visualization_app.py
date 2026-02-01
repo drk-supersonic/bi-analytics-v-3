@@ -6820,21 +6820,6 @@ def main():
 
                     st.markdown("<h3 style='text-align: center;'>Вход в систему</h3>", unsafe_allow_html=True)
 
-                    st.markdown("""
-                    <style>
-                        div[data-baseweb="input"] > div {
-                            border-color: #ccc !important;
-                            box-shadow: none !important;
-                            background-color: white !important;
-                        }
-
-                        div[data-baseweb="input"] > div:focus-within {
-                            border-color: #ccc !important;
-                            box-shadow: none !important;
-                        }
-                    </style>
-                    """, unsafe_allow_html=True)
-
                     # st.markdown("---")
 
                     # Скрытое поле-ловушка для браузера
