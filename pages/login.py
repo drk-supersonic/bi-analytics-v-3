@@ -230,6 +230,8 @@ else:
         # Кнопка "Забыли пароль?" — на всю ширину, вторая по важности
         submit_reset = st.form_submit_button("❓ Забыли пароль?", use_container_width=True)
 
+        st.markdown("<br>", unsafe_allow_html=True)
+
         if submit_login:
             if username and password:
                 success, user = authenticate(username, password)
@@ -250,9 +252,11 @@ else:
             st.session_state.reset_mode = True
             st.rerun()
 
-    st.markdown("---")
+    # st.markdown("---")
 
-    st.divider()
+    # st.divider()
+
+    st.markdown("<br>", unsafe_allow_html=True)
 
     # Информация о демо-доступе
     # with st.expander("ℹ️ Демо-доступ", expanded=False):

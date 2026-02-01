@@ -6848,6 +6848,8 @@ def main():
 
                     submit_reset = st.form_submit_button("❓ Забыли пароль?", use_container_width=True)
 
+                    st.markdown("<br>", unsafe_allow_html=True)
+
                     if submit_button:
                         if username and password:
                             success, user = authenticate(username, password)
