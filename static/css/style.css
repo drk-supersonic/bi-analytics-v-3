@@ -616,7 +616,7 @@ div.dragonBlock > section > div > section > div > section{
     height: 240px !important;
     position: absolute !important;
     z-index: 6000000 !important;
-    top: 100% !important;
+    top: -100% !important;
     right: 0 !important;
     bottom: unset !important;
     left: 0 !important;
@@ -624,7 +624,7 @@ div.dragonBlock > section > div > section > div > section{
     flex-direction: row !important;
     justify-content: center !important;
     align-items: center !important;
-    margin: 0 auto auto auto !important;
+    margin: auto auto 0 auto !important;
     background-color: blue !important;
     border-radius: 4px !important;
     overflow: hidden !important;
