@@ -508,7 +508,7 @@ textarea:focus{
 /* └────────────────────────────────────────────────────────────────────────┘ */
 
 div.dragonBlock{
-    width: 100% !important;
+    /* width: 100% !important; */
     height: 10px !important;
 
     /* width: calc(100% - var(--Muqoneee)) !important; */
@@ -530,4 +530,22 @@ div.dragonBlock{
     pointer-events: none !important;
 
     box-shadow: 0 0 0 4px hotpink !important;
+}
+@media only screen and (min-width: 0px) and (max-width: 768px){
+
+    div.dragonBlock{
+        width: calc(100% - 34px);
+    }
+}
+@media only screen and (min-width: 768.1px) and (max-width: 1260px){
+
+    div.dragonBlock{
+        width: 700px;
+    }
+}
+@media (min-width: 1260.1px){
+
+    div.dragonBlock{
+        width: 1200px;
+    }
 }
