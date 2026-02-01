@@ -513,8 +513,8 @@ div.dragonBlock{
     box-shadow: 0 0 0 4px hotpink !important;
 
     /* width: calc(100% - var(--Muqoneee)) !important; */
-    width: 100% !important;
-    height: 100vh !important;
+    /* width: 100% !important;
+    height: 100vh !important; */
     position: fixed !important;
     z-index: 2000000 !important;
     top: 0 !important;
