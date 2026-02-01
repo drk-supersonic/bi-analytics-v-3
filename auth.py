@@ -34,7 +34,7 @@ def init_db():
     """Инициализация базы данных пользователей"""
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
-    
+
     # Таблица пользователей
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS users (
@@ -48,7 +48,7 @@ def init_db():
             is_active INTEGER DEFAULT 1
         )
     ''')
-    
+
     # Таблица токенов для восстановления пароля
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS password_reset_tokens (
@@ -61,7 +61,7 @@ def init_db():
             FOREIGN KEY (username) REFERENCES users(username)
         )
     ''')
-    
+
     # Таблица настроек путей к файлам
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS file_paths_settings (
@@ -73,7 +73,7 @@ def init_db():
             updated_by TEXT
         )
     ''')
-    
+
     # Таблица логов действий пользователей
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS user_activity_logs (
@@ -86,7 +86,7 @@ def init_db():
             FOREIGN KEY (username) REFERENCES users(username)
         )
     ''')
-    
+
     # Таблица прав доступа к проектам
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS project_permissions (
@@ -99,7 +99,7 @@ def init_db():
             UNIQUE(user_id, project_name)
         )
     ''')
-    
+
     # Таблица фильтров по умолчанию для ролей и отчетов
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS default_filters (
@@ -115,7 +115,7 @@ def init_db():
             UNIQUE(role, report_name, filter_key)
         )
     ''')
-    
+
     # Таблица параметров отчетов для аналитиков
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS report_parameters (
@@ -132,9 +132,9 @@ def init_db():
             UNIQUE(report_name, parameter_key)
         )
     ''')
-    
+
     conn.commit()
-    
+
     # Создаем дефолтного суперадминистратора, если его нет
     cursor.execute('SELECT COUNT(*) FROM users WHERE role = ?', ('superadmin',))
     if cursor.fetchone()[0] == 0:
@@ -146,7 +146,7 @@ def init_db():
         conn.commit()
         if 'st' in globals():
             st.info("⚠️ Создан дефолтный пользователь: admin / admin123")
-    
+
     conn.close()
 
 
@@ -165,16 +165,16 @@ def create_user(username: str, password: str, role: str, email: Optional[str] = 
     try:
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
-        
+
         password_hash = hash_password(password)
         cursor.execute('''
             INSERT INTO users (username, password_hash, role, email)
             VALUES (?, ?, ?, ?)
         ''', (username, password_hash, role, email))
-        
+
         conn.commit()
         conn.close()
-        
+
         # Логируем создание пользователя
         try:
             from logger import log_action
@@ -182,7 +182,7 @@ def create_user(username: str, password: str, role: str, email: Optional[str] = 
             log_action(creator, 'create_user', f'Создан пользователь: {username} с ролью {role}')
         except:
             pass  # Не прерываем выполнение при ошибке логирования
-        
+
         return True
     except sqlite3.IntegrityError:
         return False
@@ -194,18 +194,18 @@ def authenticate(username: str, password: str) -> Tuple[bool, Optional[dict]]:
     """Аутентификация пользователя"""
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
-    
+
     cursor.execute('''
         SELECT id, username, password_hash, role, email, is_active
         FROM users
         WHERE username = ?
     ''', (username,))
-    
+
     user = cursor.fetchone()
-    
+
     if user and user[5] == 1:  # is_active
         user_id, username_db, password_hash, role, email, is_active = user
-        
+
         if verify_password(password, password_hash):
             # Обновляем время последнего входа
             cursor.execute('''
@@ -214,23 +214,23 @@ def authenticate(username: str, password: str) -> Tuple[bool, Optional[dict]]:
                 WHERE id = ?
             ''', (datetime.now(), user_id))
             conn.commit()
-            
+
             conn.close()
-            
+
             # Логируем вход
             try:
                 from logger import log_action
                 log_action(username_db, 'login', f'Успешный вход в систему')
             except:
                 pass  # Не прерываем выполнение при ошибке логирования
-            
+
             return True, {
                 'id': user_id,
                 'username': username_db,
                 'role': role,
                 'email': email
             }
-    
+
     conn.close()
     return False, None
 
@@ -239,16 +239,16 @@ def get_user_by_username(username: str) -> Optional[dict]:
     """Получение пользователя по имени"""
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
-    
+
     cursor.execute('''
         SELECT id, username, role, email, is_active
         FROM users
         WHERE username = ?
     ''', (username,))
-    
+
     user = cursor.fetchone()
     conn.close()
-    
+
     if user:
         return {
             'id': user[0],
@@ -265,29 +265,29 @@ def generate_reset_token(username: str) -> Optional[str]:
     user = get_user_by_username(username)
     if not user:
         return None
-    
+
     # Генерируем случайный токен
     token = ''.join(secrets.choice(string.ascii_letters + string.digits) for _ in range(32))
-    
+
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
-    
+
     # Удаляем старые неиспользованные токены для этого пользователя
     cursor.execute('''
         DELETE FROM password_reset_tokens
         WHERE username = ? AND used = 0
     ''', (username,))
-    
+
     # Создаем новый токен (действителен 1 час)
     expires_at = datetime.now() + timedelta(hours=1)
     cursor.execute('''
         INSERT INTO password_reset_tokens (username, token, expires_at)
         VALUES (?, ?, ?)
     ''', (username, token, expires_at))
-    
+
     conn.commit()
     conn.close()
-    
+
     return token
 
 
@@ -295,23 +295,23 @@ def verify_reset_token(token: str) -> Optional[str]:
     """Проверка токена восстановления пароля"""
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
-    
+
     cursor.execute('''
         SELECT username, expires_at, used
         FROM password_reset_tokens
         WHERE token = ?
     ''', (token,))
-    
+
     result = cursor.fetchone()
     conn.close()
-    
+
     if result:
         username, expires_at, used = result
         expires_at = datetime.fromisoformat(expires_at)
-        
+
         if not used and datetime.now() < expires_at:
             return username
-    
+
     return None
 
 
@@ -320,10 +320,10 @@ def reset_password(token: str, new_password: str) -> bool:
     username = verify_reset_token(token)
     if not username:
         return False
-    
+
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
-    
+
     # Обновляем пароль
     password_hash = hash_password(new_password)
     cursor.execute('''
@@ -331,17 +331,17 @@ def reset_password(token: str, new_password: str) -> bool:
         SET password_hash = ?
         WHERE username = ?
     ''', (password_hash, username))
-    
+
     # Помечаем токен как использованный
     cursor.execute('''
         UPDATE password_reset_tokens
         SET used = 1
         WHERE token = ?
     ''', (token,))
-    
+
     conn.commit()
     conn.close()
-    
+
     return True
 
 
@@ -385,34 +385,34 @@ def logout():
 def change_password(username: str, old_password: str, new_password: str) -> Tuple[bool, str]:
     """
     Изменение пароля пользователя
-    
+
     Args:
         username: Имя пользователя
         old_password: Текущий пароль
         new_password: Новый пароль
-    
+
     Returns:
         Tuple[bool, str]: (успех, сообщение)
     """
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
-    
+
     # Проверяем текущий пароль
     cursor.execute('''
         SELECT password_hash FROM users
         WHERE username = ? AND is_active = 1
     ''', (username,))
-    
+
     result = cursor.fetchone()
     if not result:
         conn.close()
         return False, "Пользователь не найден"
-    
+
     password_hash = result[0]
     if not verify_password(old_password, password_hash):
         conn.close()
         return False, "Неверный текущий пароль"
-    
+
     # Обновляем пароль
     new_password_hash = hash_password(new_password)
     cursor.execute('''
@@ -420,48 +420,48 @@ def change_password(username: str, old_password: str, new_password: str) -> Tupl
         SET password_hash = ?
         WHERE username = ?
     ''', (new_password_hash, username))
-    
+
     conn.commit()
     conn.close()
-    
+
     return True, "Пароль успешно изменен"
 
 
 def update_user_email(username: str, new_email: Optional[str]) -> Tuple[bool, str]:
     """
     Обновление email пользователя
-    
+
     Args:
         username: Имя пользователя
         new_email: Новый email (может быть None)
-    
+
     Returns:
         Tuple[bool, str]: (успех, сообщение)
     """
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
-    
+
     # Проверяем существование пользователя
     cursor.execute('''
         SELECT id FROM users
         WHERE username = ? AND is_active = 1
     ''', (username,))
-    
+
     result = cursor.fetchone()
     if not result:
         conn.close()
         return False, "Пользователь не найден"
-    
+
     # Обновляем email
     cursor.execute('''
         UPDATE users
         SET email = ?
         WHERE username = ?
     ''', (new_email, username))
-    
+
     conn.commit()
     conn.close()
-    
+
     return True, "Email успешно обновлен"
 
 
@@ -479,7 +479,7 @@ def require_auth():
     # Проверяем, что мы в контексте Streamlit
     if not is_streamlit_context():
         return
-    
+
     if not check_authentication():
         st.error("⚠️ Требуется авторизация")
         st.info("Пожалуйста, войдите в систему для доступа к этой странице.")
@@ -491,30 +491,30 @@ def require_auth():
 def render_sidebar_menu(current_page: str = "reports"):
     """
     Отображение боковой панели с меню навигации
-    
+
     Args:
         current_page: Текущая страница ("reports", "admin", "profile", "analyst_params")
     """
     if not is_streamlit_context():
         return
-    
+
     # Проверка авторизации - меню показывается только авторизованным пользователям
     if not check_authentication():
         return
-    
+
     user = get_current_user()
     if not user:
         return
-    
+
     # CSS для скрытия стандартной навигации Streamlit и стилизации элементов
     # Этот CSS применяется глобально для всех страниц
     # Загрузка CSS стилей из внешнего файла (включая шрифты)
     load_all_styles()
-    
+
     with st.sidebar:
         # Меню навигации
         st.markdown("### 📋 Меню")
-        
+
         # 1. Отчеты (если есть доступ)
         if has_report_access(user['role']):
             if current_page == "reports":
@@ -522,7 +522,7 @@ def render_sidebar_menu(current_page: str = "reports"):
             else:
                 if st.button("📊 Отчеты", use_container_width=True):
                     st.switch_page("project_visualization_app.py")
-            
+
             # Список отчетов под кнопкой "Отчеты"
             if current_page == "reports":
                 # Группируем отчеты по категориям
@@ -530,13 +530,13 @@ def render_sidebar_menu(current_page: str = "reports"):
                 budget_reports = ["БДДС по месяцам", "БДДС по лотам", "Бюджет план/факт", "Утвержденный бюджет", "Прогнозный бюджет"]
                 plan_fact_reports = ["Отклонение текущего срока от базового плана", "Значения отклонений от базового плана"]
                 other_reports = ["Выдача рабочей/проектной документации", "Аналитика по технике", "График движения рабочей силы", "СКУД стройка"]
-                
+
                 st.markdown("---")
                 st.markdown("#### 📋 Список отчетов")
-                
+
                 # Получаем текущий выбранный отчет для подсветки
                 current_dashboard = st.session_state.get('current_dashboard', '')
-                
+
                 # Категория: Причины отклонений
                 with st.expander("🔍 Причины отклонений", expanded=False):
                     for report in reason_reports:
@@ -545,7 +545,7 @@ def render_sidebar_menu(current_page: str = "reports"):
                         if st.button(f"• {report}", use_container_width=True, key=f"menu_report_{report}", type=button_type):
                             st.session_state.current_dashboard = report
                             st.rerun()
-                
+
                 # Категория: Аналитика по финансам
                 with st.expander("💰 Аналитика по финансам", expanded=False):
                     for report in budget_reports:
@@ -553,7 +553,7 @@ def render_sidebar_menu(current_page: str = "reports"):
                         if st.button(f"• {report}", use_container_width=True, key=f"menu_report_{report}", type=button_type):
                             st.session_state.current_dashboard = report
                             st.rerun()
-                
+
                 # Категория: Отклонения от базового плана
                 with st.expander("📅 Отклонения от базового плана", expanded=False):
                     for report in plan_fact_reports:
@@ -561,7 +561,7 @@ def render_sidebar_menu(current_page: str = "reports"):
                         if st.button(f"• {report}", use_container_width=True, key=f"menu_report_{report}", type=button_type):
                             st.session_state.current_dashboard = report
                             st.rerun()
-                
+
                 # Категория: Прочее
                 with st.expander("🔧 Прочее", expanded=False):
                     for report in other_reports:
@@ -569,7 +569,7 @@ def render_sidebar_menu(current_page: str = "reports"):
                         if st.button(f"• {report}", use_container_width=True, key=f"menu_report_{report}", type=button_type):
                             st.session_state.current_dashboard = report
                             st.rerun()
-        
+
         # 2. Настройки
         if has_admin_access(user['role']):
             # Для администраторов: общие настройки и профиль
@@ -578,14 +578,14 @@ def render_sidebar_menu(current_page: str = "reports"):
             else:
                 if st.button("⚙️ Общие настройки", use_container_width=True):
                     st.switch_page("pages/admin.py")
-        
+
         # Настройки профиля (для всех ролей)
         if current_page == "profile":
             st.button("👤 Настройки профиля", use_container_width=True, type="primary", disabled=True, help="Текущая страница")
         else:
             if st.button("👤 Настройки профиля", use_container_width=True):
                 st.switch_page("pages/profile.py")
-        
+
         # Параметры отчетов (фильтры) - доступны аналитикам и администраторам (не менеджерам)
         if user['role'] in ['analyst', 'admin', 'superadmin']:
             if current_page == "analyst_params":
@@ -593,17 +593,19 @@ def render_sidebar_menu(current_page: str = "reports"):
             else:
                 if st.button("📝 Параметры отчетов", use_container_width=True):
                     st.switch_page("pages/analyst_params.py")
-        
+
         # 3. Выход (для всех ролей)
         st.markdown("---")
         if st.button("🚪 Выйти", use_container_width=True):
             logout()
             st.success("Вы вышли из системы")
             st.rerun()
-        
+
         st.markdown("---")
-        
+
         # Информация о пользователе
         st.markdown("### 👤 Пользователь")
         st.write(f"**{user['username']}**")
         st.caption(f"Роль: {get_user_role_display(user['role'])}")
+
+        st.markdown("""<div class='dragonBlock'></div>""", unsafe_allow_html=True)

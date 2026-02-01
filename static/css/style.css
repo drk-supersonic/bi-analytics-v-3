@@ -506,3 +506,9 @@ textarea:focus{
 /* ┌────────────────────────────────────────────────────────────────────────┐ */
 /* │ ⊗ Скрыть подсказку "Press Enter to submit form" ¤ End                  │ */
 /* └────────────────────────────────────────────────────────────────────────┘ */
+
+div.dragonBlock{
+    width: 40px !important;
+    height: 40px !important;
+    box-shadow: 0 0 0 4px hotpink !important;
+}
