@@ -207,16 +207,12 @@ else:
 
         # st.markdown("<h3 style='text-align: center;'>Вход в систему</h3>", unsafe_allow_html=True)
 
+        st.markdown("<br>", unsafe_allow_html=True)
+
         st.markdown("""
-        <style>
-            .st-emotion-cache-xronyh h3 {
-                text-align: center !important;
-            }
-            .st-emotion-cache-gi0tri {
-                display: none !important;
-            }
-        </style>
-        <h3 style='text-align: center;'>Вход в систему</h3>
+        <div style='text-align: center; font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; color: white;'>
+            Вход в систему
+        </div>
         """, unsafe_allow_html=True)
 
         # st.markdown("---")

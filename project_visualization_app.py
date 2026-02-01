@@ -6818,6 +6818,8 @@ def main():
 
                     # st.markdown("### Вход в систему")
 
+                    st.markdown("<br>", unsafe_allow_html=True)
+
                     st.markdown("""
                     <div style='text-align: center; font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; color: white;'>
                         Вход в систему
