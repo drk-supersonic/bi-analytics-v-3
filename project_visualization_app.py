@@ -6818,18 +6818,21 @@ def main():
 
                     # st.markdown("### Вход в систему")
 
-                    # st.markdown("<h3 style='text-align: center;'>Вход в систему</h3>", unsafe_allow_html=True)
+                    st.markdown("<h3 style='text-align: center;'>Вход в систему</h3>", unsafe_allow_html=True)
 
                     st.markdown("""
                     <style>
-                        .st-emotion-cache-xronyh h3 {
-                            text-align: center !important;
+                        div[data-baseweb="input"] > div {
+                            border-color: #ccc !important;
+                            box-shadow: none !important;
+                            background-color: white !important;
                         }
-                        .st-emotion-cache-gi0tri {
-                            display: none !important;
+
+                        div[data-baseweb="input"] > div:focus-within {
+                            border-color: #ccc !important;
+                            box-shadow: none !important;
                         }
                     </style>
-                    <h3 style='text-align: center;'>Вход в систему</h3>
                     """, unsafe_allow_html=True)
 
                     # st.markdown("---")
@@ -6837,21 +6840,6 @@ def main():
                     # Скрытое поле-ловушка для браузера
                     st.markdown('<input type="text" style="display:none" autocomplete="username">', unsafe_allow_html=True)
                     st.markdown('<input type="password" style="display:none" autocomplete="new-password">', unsafe_allow_html=True)
-
-st.markdown("""
-<style>
-    div[data-baseweb="input"] > div {
-        border-color: #ccc !important;
-        box-shadow: none !important;
-        background-color: white !important;
-    }
-
-    div[data-baseweb="input"] > div:focus-within {
-        border-color: #ccc !important;
-        box-shadow: none !important;
-    }
-</style>
-""", unsafe_allow_html=True)
 
                     username = st.text_input(
                         "👤 Имя пользователя",
