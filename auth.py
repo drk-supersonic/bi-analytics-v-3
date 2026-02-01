@@ -607,5 +607,3 @@ def render_sidebar_menu(current_page: str = "reports"):
         st.markdown("### 👤 Пользователь")
         st.write(f"**{user['username']}**")
         st.caption(f"Роль: {get_user_role_display(user['role'])}")
-
-        st.markdown("""<div class='dragonBlock'></div>""", unsafe_allow_html=True)
