@@ -70,6 +70,30 @@ load_all_styles()
 
 ################################################################################
 
+    # Там где нужно разместить AI (строка ~6934)
+    st.markdown("""
+    <div class='dragonBlock'>
+        <section>
+            <div>
+                <section>
+                    <div>
+                        <section>
+                            <div class='ai-anchor'>
+    """, unsafe_allow_html=True)
+
+    # Вызываем модуль
+    ai_assistant.render_ai_assistant()
+
+    st.markdown("""
+                            </div>
+                        </section>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </div>
+    """, unsafe_allow_html=True)
+
 # Russian month names mapping
 RUSSIAN_MONTHS = {
     1: 'Январь', 2: 'Февраль', 3: 'Март', 4: 'Апрель',
@@ -6996,29 +7020,7 @@ def main():
     #
     # st.markdown("""</div></section></div></section></div></section></div>""", unsafe_allow_html=True)
 
-    # Там где нужно разместить AI (строка ~6934)
-    st.markdown("""
-    <div class='dragonBlock'>
-        <section>
-            <div>
-                <section>
-                    <div>
-                        <section>
-                            <div class='ai-anchor'>
-    """, unsafe_allow_html=True)
 
-    # Вызываем модуль
-    ai_assistant.render_ai_assistant()
-
-    st.markdown("""
-                            </div>
-                        </section>
-                    </div>
-                </section>
-            </div>
-        </section>
-    </div>
-    """, unsafe_allow_html=True)
 
     st.markdown('<h1 class="main-header">📊 Панель аналитики проектов</h1>', unsafe_allow_html=True)
 
