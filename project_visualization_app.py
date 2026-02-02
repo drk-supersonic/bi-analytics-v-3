@@ -6920,7 +6920,66 @@ def main():
             st.rerun()
         st.stop()
 
-    st.markdown("""<div class='dragonBlock'><section><div><section><div><section></section></div></section></div></section></div>""", unsafe_allow_html=True)
+    st.markdown("""<div class='dragonBlock'><section><div><section><div><section>""", unsafe_allow_html=True)
+
+  # AI помощник ВНУТРИ dragonBlock
+    st.markdown("---")
+    st.markdown("### 💬 AI Помощник")
+
+    # Инициализация истории чата
+    if "chat_history" not in st.session_state:
+        st.session_state.chat_history = []
+
+    # Показываем историю
+    for msg in st.session_state.chat_history[-3:]:
+        if msg["role"] == "user":
+            st.markdown(f"👤 **Вы:** {msg['content']}")
+        else:
+            st.markdown(f"🤖 **AI:** {msg['content']}")
+
+    # Поле ввода
+    question = st.text_area("Ваш вопрос:", key="ai_question", height=80)
+
+    # Кнопки
+    col1, col2 = st.columns([3, 1])
+    with col1:
+        ask_button = st.button("Спросить AI", use_container_width=True)
+    with col2:
+        clear_button = st.button("🗑️", use_container_width=True)
+
+    # Обработка
+    if ask_button and question:
+        with st.spinner("AI думает..."):
+            try:
+                client = get_hf_client()
+                if client:
+                    messages = [
+                        {"role": "system", "content": "Ты помощник системы аналитики проектов. Отвечай кратко на русском."},
+                        {"role": "user", "content": question}
+                    ]
+
+                    response = client.chat_completion(
+                        messages=messages,
+                        model="mistralai/Mistral-7B-Instruct-v0.2",
+                        max_tokens=300,
+                        temperature=0.7
+                    )
+
+                    answer = response.choices[0].message.content
+
+                    st.session_state.chat_history.append({"role": "user", "content": question})
+                    st.session_state.chat_history.append({"role": "assistant", "content": answer})
+                    st.rerun()
+            except Exception as e:
+                st.error(f"❌ Ошибка: {str(e)}")
+
+    if clear_button:
+        st.session_state.chat_history = []
+        st.rerun()
+
+    # ============= КОНЕЦ КОНТЕНТА =============
+
+    st.markdown("""</section></div></section></div></section></div>""", unsafe_allow_html=True)
 
     st.markdown('<h1 class="main-header">📊 Панель аналитики проектов</h1>', unsafe_allow_html=True)
 
