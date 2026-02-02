@@ -6995,82 +6995,51 @@ def main():
     #
     # st.markdown("""</div></section></div></section></div></section></div>""", unsafe_allow_html=True)
 
-    # Открываем структуру dragonBlock
-    st.markdown("""
-    <div class='dragonBlock'>
-        <section>
-            <div>
-                <section>
-                    <div>
-                        <section>
-                            <div class='ai-anchor'>
-                                <div style='width: 100%; height: 100%; padding: 20px; overflow-y: auto;'>
-                                    <h3>💬 AI Помощник</h3>
-    """, unsafe_allow_html=True)
+# Инициализация
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
 
-    # Инициализация истории чата
-    if "chat_history" not in st.session_state:
-        st.session_state.chat_history = []
+# Формируем HTML истории
+history_html = ""
+for msg in st.session_state.chat_history[-3:]:
+    if msg["role"] == "user":
+        history_html += f"<p>👤 <strong>Вы:</strong> {msg['content']}</p>"
+    else:
+        history_html += f"<p>🤖 <strong>AI:</strong> {msg['content']}</p>"
 
-    # Показываем историю КАК HTML
-    history_html = ""
-    for msg in st.session_state.chat_history[-3:]:
-        if msg["role"] == "user":
-            history_html += f"<p>👤 <strong>Вы:</strong> {msg['content']}</p>"
-        else:
-            history_html += f"<p>🤖 <strong>AI:</strong> {msg['content']}</p>"
+# Весь AI блок как HTML компонент
+import streamlit.components.v1 as components
 
-    st.markdown(history_html, unsafe_allow_html=True)
+ai_html = f"""
+<div class='dragonBlock'>
+    <section>
+        <div>
+            <section>
+                <div>
+                    <section>
+                        <div class='ai-anchor' style='padding: 20px; overflow-y: auto;'>
+                            <h3>💬 AI Помощник</h3>
+                            {history_html}
+                        </div>
+                    </section>
+                </div>
+            </section>
+        </div>
+    </section>
+</div>
+"""
 
-    # Поле ввода (это останется как Streamlit виджет)
-    question = st.text_area("Ваш вопрос:", key="ai_question", height=80)
+components.html(ai_html, height=300, scrolling=True)
 
-    # Кнопки
-    col1, col2 = st.columns([3, 1])
-    with col1:
-        ask_button = st.button("Спросить AI", use_container_width=True)
-    with col2:
-        clear_button = st.button("🗑️", use_container_width=True)
+# Виджеты вне блока (они будут ниже)
+question = st.text_area("Ваш вопрос:", key="ai_question", height=80)
+col1, col2 = st.columns([3, 1])
+with col1:
+    ask_button = st.button("Спросить AI", use_container_width=True)
+with col2:
+    clear_button = st.button("🗑️", use_container_width=True)
 
-    # Обработка
-    if ask_button and question:
-        with st.spinner("AI думает..."):
-            try:
-                client = get_groq_client()
-                if client:
-                    response = client.chat.completions.create(
-                        model="llama-3.3-70b-versatile",
-                        messages=[
-                            {"role": "system", "content": "Ты - помощник системы аналитики проектов. Отвечай кратко на русском языке."},
-                            {"role": "user", "content": question}
-                        ],
-                        max_tokens=300,
-                        temperature=0.7
-                    )
-                    answer = response.choices[0].message.content
-                    st.session_state.chat_history.append({"role": "user", "content": question})
-                    st.session_state.chat_history.append({"role": "assistant", "content": answer})
-                    st.rerun()
-                else:
-                    st.error("❌ Не удалось подключиться к AI")
-            except Exception as e:
-                st.error(f"❌ Ошибка: {str(e)}")
-
-    if clear_button:
-        st.session_state.chat_history = []
-        st.rerun()
-
-    # Закрываем структуру
-    st.markdown("""
-                                </div>
-                            </div>
-                        </section>
-                    </div>
-                </section>
-            </div>
-        </section>
-    </div>
-    """, unsafe_allow_html=True)
+# Обработка...
 
     st.markdown('<h1 class="main-header">📊 Панель аналитики проектов</h1>', unsafe_allow_html=True)
 
