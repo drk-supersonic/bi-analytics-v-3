@@ -6995,31 +6995,92 @@ def main():
     #
     # st.markdown("""</div></section></div></section></div></section></div>""", unsafe_allow_html=True)
 
-# Инициализация
-if "chat_history" not in st.session_state:
-    st.session_state.chat_history = []
+# Добавьте этот CSS в начало файла (где у вас другие стили)
+st.markdown("""
+<style>
+/* Целевой контейнер для AI */
+div[data-testid="stVerticalBlock"] > div:has(> div.ai-container-marker) {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    padding: 20px !important;
+    overflow-y: auto !important;
+    background-color: gold !important;
+    z-index: 9999999 !important;
+}
 
-# Формируем HTML истории
-history_html = ""
-for msg in st.session_state.chat_history[-3:]:
-    if msg["role"] == "user":
-        history_html += f"<p>👤 <strong>Вы:</strong> {msg['content']}</p>"
-    else:
-        history_html += f"<p>🤖 <strong>AI:</strong> {msg['content']}</p>"
+/* Маркер для идентификации AI блока */
+div.ai-container-marker {
+    display: none !important;
+}
+</style>
+""", unsafe_allow_html=True)
 
-# Весь AI блок как HTML компонент
-import streamlit.components.v1 as components
-
-ai_html = f"""
+# Открываем dragonBlock структуру
+st.markdown("""
 <div class='dragonBlock'>
     <section>
         <div>
             <section>
                 <div>
                     <section>
-                        <div class='ai-anchor' style='padding: 20px; overflow-y: auto;'>
-                            <h3>💬 AI Помощник</h3>
-                            {history_html}
+                        <div class='ai-anchor'>
+""", unsafe_allow_html=True)
+
+# МАРКЕР для CSS (невидимый)
+st.markdown('<div class="ai-container-marker"></div>', unsafe_allow_html=True)
+
+# AI помощник
+st.markdown("### 💬 AI Помощник")
+
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
+
+for msg in st.session_state.chat_history[-3:]:
+    if msg["role"] == "user":
+        st.markdown(f"👤 **Вы:** {msg['content']}")
+    else:
+        st.markdown(f"🤖 **AI:** {msg['content']}")
+
+question = st.text_area("Ваш вопрос:", key="ai_question", height=80)
+
+col1, col2 = st.columns([3, 1])
+with col1:
+    ask_button = st.button("Спросить AI", use_container_width=True)
+with col2:
+    clear_button = st.button("🗑️", use_container_width=True)
+
+if ask_button and question:
+    with st.spinner("AI думает..."):
+        try:
+            client = get_groq_client()
+            if client:
+                response = client.chat.completions.create(
+                    model="llama-3.3-70b-versatile",
+                    messages=[
+                        {"role": "system", "content": "Ты - помощник системы аналитики проектов. Отвечай кратко на русском языке."},
+                        {"role": "user", "content": question}
+                    ],
+                    max_tokens=300,
+                    temperature=0.7
+                )
+                answer = response.choices[0].message.content
+                st.session_state.chat_history.append({"role": "user", "content": question})
+                st.session_state.chat_history.append({"role": "assistant", "content": answer})
+                st.rerun()
+            else:
+                st.error("❌ Не удалось подключиться к AI")
+        except Exception as e:
+            st.error(f"❌ Ошибка: {str(e)}")
+
+if clear_button:
+    st.session_state.chat_history = []
+    st.rerun()
+
+# Закрываем dragonBlock
+st.markdown("""
                         </div>
                     </section>
                 </div>
@@ -7027,19 +7088,7 @@ ai_html = f"""
         </div>
     </section>
 </div>
-"""
-
-components.html(ai_html, height=300, scrolling=True)
-
-# Виджеты вне блока (они будут ниже)
-question = st.text_area("Ваш вопрос:", key="ai_question", height=80)
-col1, col2 = st.columns([3, 1])
-with col1:
-    ask_button = st.button("Спросить AI", use_container_width=True)
-with col2:
-    clear_button = st.button("🗑️", use_container_width=True)
-
-# Обработка...
+""", unsafe_allow_html=True)
 
     st.markdown('<h1 class="main-header">📊 Панель аналитики проектов</h1>', unsafe_allow_html=True)
 
