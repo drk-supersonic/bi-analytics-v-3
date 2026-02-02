@@ -613,8 +613,8 @@ div.dragonBlock > section > div > section > div{
 }
 div.dragonBlock > section > div > section > div > section{
     width: calc(100% - 14px) !important;
-    max-width: 340px !important;
-    height: 100px !important;
+    max-width: 540px !important;
+    height: 240px !important;
     position: absolute !important;
     z-index: 6000000 !important;
     top: auto !important;
