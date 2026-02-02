@@ -6656,7 +6656,7 @@ def main():
                                 <div class='ai-anchor'>
         """, unsafe_allow_html=True)
 
-        ai_assistant.render_ai_assistant()
+        # ai_assistant.render_ai_assistant()
 
         st.markdown("""
                                 </div>
