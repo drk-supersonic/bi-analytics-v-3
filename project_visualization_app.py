@@ -6931,7 +6931,7 @@ def main():
             st.rerun()
         st.stop()
 
-    st.markdown("""<div class='dragonBlock'><section><div><section><div><section>""", unsafe_allow_html=True)
+    st.markdown("""<div class='dragonBlock'><section><div><section><div><section><div>""", unsafe_allow_html=True)
 
     # AI помощник ВНУТРИ dragonBlock
     st.markdown("---")
@@ -6993,7 +6993,7 @@ def main():
 
     # ============= КОНЕЦ КОНТЕНТА =============
 
-    st.markdown("""</section></div></section></div></section></div>""", unsafe_allow_html=True)
+    st.markdown("""</div></section></div></section></div></section></div>""", unsafe_allow_html=True)
 
     st.markdown('<h1 class="main-header">📊 Панель аналитики проектов</h1>', unsafe_allow_html=True)
 
