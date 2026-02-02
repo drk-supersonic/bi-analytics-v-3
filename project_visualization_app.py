@@ -70,30 +70,6 @@ load_all_styles()
 
 ################################################################################
 
-    # Там где нужно разместить AI (строка ~6934)
-    st.markdown("""
-    <div class='dragonBlock'>
-        <section>
-            <div>
-                <section>
-                    <div>
-                        <section>
-                            <div class='ai-anchor'>
-    """, unsafe_allow_html=True)
-
-    # Вызываем модуль
-    ai_assistant.render_ai_assistant()
-
-    st.markdown("""
-                            </div>
-                        </section>
-                    </div>
-                </section>
-            </div>
-        </section>
-    </div>
-    """, unsafe_allow_html=True)
-
 # Russian month names mapping
 RUSSIAN_MONTHS = {
     1: 'Январь', 2: 'Февраль', 3: 'Март', 4: 'Апрель',
@@ -6668,6 +6644,31 @@ def main():
                 <p style="color: #a0a0a0; font-size: 1.1rem;">Войдите в систему для доступа к панели аналитики</p>
             </div>
         """, unsafe_allow_html=True)
+
+        # ========== AI БЛОК ==========
+        st.markdown("""
+        <div class='dragonBlock'>
+            <section>
+                <div>
+                    <section>
+                        <div>
+                            <section>
+                                <div class='ai-anchor'>
+        """, unsafe_allow_html=True)
+
+        ai_assistant.render_ai_assistant()
+
+        st.markdown("""
+                                </div>
+                            </section>
+                        </div>
+                    </section>
+                </div>
+            </section>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # ========== AI БЛОК ==========
 
         # Инициализация переменных для восстановления пароля
         if 'reset_mode' not in st.session_state:
