@@ -6995,7 +6995,7 @@ def main():
     #
     # st.markdown("""</div></section></div></section></div></section></div>""", unsafe_allow_html=True)
 
-    # Открываем всю структуру dragonBlock
+    # Открываем структуру dragonBlock
     st.markdown("""
     <div class='dragonBlock'>
         <section>
@@ -7004,23 +7004,25 @@ def main():
                     <div>
                         <section>
                             <div class='ai-anchor'>
+                                <div style='width: 100%; height: 100%; padding: 20px; overflow-y: auto;'>
+                                    <h3>💬 AI Помощник</h3>
     """, unsafe_allow_html=True)
-
-    # AI помощник ВНУТРИ dragonBlock > ... > div.ai-anchor
-    st.markdown("### 💬 AI Помощник")
 
     # Инициализация истории чата
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = []
 
-    # Показываем историю
+    # Показываем историю КАК HTML
+    history_html = ""
     for msg in st.session_state.chat_history[-3:]:
         if msg["role"] == "user":
-            st.markdown(f"👤 **Вы:** {msg['content']}")
+            history_html += f"<p>👤 <strong>Вы:</strong> {msg['content']}</p>"
         else:
-            st.markdown(f"🤖 **AI:** {msg['content']}")
+            history_html += f"<p>🤖 <strong>AI:</strong> {msg['content']}</p>"
 
-    # Поле ввода
+    st.markdown(history_html, unsafe_allow_html=True)
+
+    # Поле ввода (это останется как Streamlit виджет)
     question = st.text_area("Ваш вопрос:", key="ai_question", height=80)
 
     # Кнопки
@@ -7054,13 +7056,13 @@ def main():
             except Exception as e:
                 st.error(f"❌ Ошибка: {str(e)}")
 
-    # Очистка истории
     if clear_button:
         st.session_state.chat_history = []
         st.rerun()
 
-    # Закрываем всю структуру dragonBlock
+    # Закрываем структуру
     st.markdown("""
+                                </div>
                             </div>
                         </section>
                     </div>
