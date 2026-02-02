@@ -6935,7 +6935,7 @@ def main():
 
     # AI помощник ВНУТРИ dragonBlock
     st.markdown("---")
-    st.markdown("### 💬 AI Помощник")
+    st.markdown("### 💬 AI Помощникq")
 
     # Инициализация истории чата
     if "chat_history" not in st.session_state:
