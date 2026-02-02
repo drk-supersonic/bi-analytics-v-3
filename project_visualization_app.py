@@ -6971,7 +6971,7 @@ def main():
 
                     response = client.chat_completion(
                         messages=messages,
-                        model="mistralai/Mistral-7B-Instruct-v0.2",
+                        model="Qwen/Qwen2.5-3B-Instruct",
                         max_tokens=300,
                         temperature=0.7
                     )
