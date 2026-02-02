@@ -76,6 +76,17 @@ RUSSIAN_MONTHS = {
     9: 'Сентябрь', 10: 'Октябрь', 11: 'Ноябрь', 12: 'Декабрь'
 }
 
+# ============= ФУНКЦИЯ ДЛЯ AI ПОМОЩНИКА =============
+@st.cache_resource
+def get_hf_client():
+    """Получить закэшированный клиент Hugging Face"""
+    try:
+        return InferenceClient(token=st.secrets["HF_TOKEN"])
+    except Exception as e:
+        st.error(f"Ошибка инициализации HF клиента: {e}")
+        return None
+# ============= ФУНКЦИЯ ДЛЯ AI ПОМОЩНИКА =============
+
 def apply_default_filters(report_name: str, user_role: str, filter_widgets: dict) -> dict:
     """
     Применение фильтров по умолчанию для отчета и роли
