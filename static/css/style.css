@@ -604,8 +604,8 @@ div.dragonBlock > section > div > section > div{
 }
 div.dragonBlock > section > div > section > div > section{
     width: calc(100% - 14px) !important;
-    max-width: 540px !important;
-    height: 240px !important;
+    max-width: 340px !important;
+    height: 80px !important;
     position: absolute !important;
     z-index: 6000000 !important;
     top: auto !important;
@@ -618,7 +618,7 @@ div.dragonBlock > section > div > section > div > section{
     align-items: center !important;
     margin: auto auto 0 auto !important;
     background-color: gold !important;
-    border: 1px solid blue !important;
+    /* border: 1px solid blue !important; */
     border-radius: 4px !important;
     overflow: hidden !important;
 }
