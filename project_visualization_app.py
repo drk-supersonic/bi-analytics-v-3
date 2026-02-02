@@ -6932,48 +6932,7 @@ def main():
         st.stop()
 
     # st.markdown("""<div class='dragonBlock'><section><div><section><div><section><div>""", unsafe_allow_html=True)
-
-    # 2. Создаём контейнер для AI-помощника
-    ai_container = st.container()
-
-    # 3. Вставляем "якорь", чтобы CSS мог найти наш контейнер
-    #    (самый надёжный способ — уникальный класс или id)
-    ai_container.markdown(
-        '<div class="dragonBlock"><section><div><section><div><section><div class="ai-anchor"></div></section></div></section></div></section></div>',
-        unsafe_allow_html=True
-    )
-
-    # 4. Теперь кладём весь контент ВНУТРЬ этого же контейнера
-    with ai_container:
-        st.markdown("---")
-        st.markdown("### 💬 AI Помощник")
-
-        # история
-        for msg in st.session_state.chat_history[-3:]:
-            if msg["role"] == "user":
-                st.markdown(f"👤 **Вы:** {msg['content']}")
-            else:
-                st.markdown(f"🤖 **AI:** {msg['content']}")
-
-        question = st.text_area("Ваш вопрос:", key="ai_question", height=80)
-
-        col1, col2 = st.columns([3, 1])
-        with col1:
-            ask_button = st.button("Спросить AI", use_container_width=True)
-        with col2:
-            clear_button = st.button("🗑️", use_container_width=True)
-
-        # ── вся твоя логика groq и spinner без изменений ──
-        if ask_button and question:
-            with st.spinner("AI думает..."):
-                # ... client.chat.completions.create ...
-                # append в историю
-                st.rerun()
-
-        if clear_button:
-            st.session_state.chat_history = []
-            st.rerun()
-
+    #
     # # AI помощник ВНУТРИ dragonBlock
     # st.markdown("---")
     # st.markdown("### 💬 AI Помощникq")
@@ -7033,8 +6992,83 @@ def main():
     #     st.rerun()
     #
     # # ============= КОНЕЦ КОНТЕНТА =============
-
+    #
     # st.markdown("""</div></section></div></section></div></section></div>""", unsafe_allow_html=True)
+
+    # Открываем всю структуру dragonBlock
+    st.markdown("""
+    <div class='dragonBlock'>
+        <section>
+            <div>
+                <section>
+                    <div>
+                        <section>
+                            <div class='ai-anchor'>
+    """, unsafe_allow_html=True)
+
+    # AI помощник ВНУТРИ dragonBlock > ... > div.ai-anchor
+    st.markdown("### 💬 AI Помощник")
+
+    # Инициализация истории чата
+    if "chat_history" not in st.session_state:
+        st.session_state.chat_history = []
+
+    # Показываем историю
+    for msg in st.session_state.chat_history[-3:]:
+        if msg["role"] == "user":
+            st.markdown(f"👤 **Вы:** {msg['content']}")
+        else:
+            st.markdown(f"🤖 **AI:** {msg['content']}")
+
+    # Поле ввода
+    question = st.text_area("Ваш вопрос:", key="ai_question", height=80)
+
+    # Кнопки
+    col1, col2 = st.columns([3, 1])
+    with col1:
+        ask_button = st.button("Спросить AI", use_container_width=True)
+    with col2:
+        clear_button = st.button("🗑️", use_container_width=True)
+
+    # Обработка
+    if ask_button and question:
+        with st.spinner("AI думает..."):
+            try:
+                client = get_groq_client()
+                if client:
+                    response = client.chat.completions.create(
+                        model="llama-3.3-70b-versatile",
+                        messages=[
+                            {"role": "system", "content": "Ты - помощник системы аналитики проектов. Отвечай кратко на русском языке."},
+                            {"role": "user", "content": question}
+                        ],
+                        max_tokens=300,
+                        temperature=0.7
+                    )
+                    answer = response.choices[0].message.content
+                    st.session_state.chat_history.append({"role": "user", "content": question})
+                    st.session_state.chat_history.append({"role": "assistant", "content": answer})
+                    st.rerun()
+                else:
+                    st.error("❌ Не удалось подключиться к AI")
+            except Exception as e:
+                st.error(f"❌ Ошибка: {str(e)}")
+
+    # Очистка истории
+    if clear_button:
+        st.session_state.chat_history = []
+        st.rerun()
+
+    # Закрываем всю структуру dragonBlock
+    st.markdown("""
+                            </div>
+                        </section>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </div>
+    """, unsafe_allow_html=True)
 
     st.markdown('<h1 class="main-header">📊 Панель аналитики проектов</h1>', unsafe_allow_html=True)
 
