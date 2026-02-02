@@ -6924,67 +6924,6 @@ def main():
 
     st.markdown('<h1 class="main-header">📊 Панель аналитики проектов</h1>', unsafe_allow_html=True)
 
-
-
-# Обработка нажатия "Спросить"
-        if ask_button and question:
-            with st.spinner("AI думает..."):
-                try:
-                    client = get_hf_client()
-                    if client is None:
-                        st.error("Не удалось подключиться к AI. Проверьте настройки.")
-                    else:
-                        # Формируем сообщения для чата
-                        messages = [
-                            {
-                                "role": "system",
-                                "content": "Ты - помощник системы аналитики проектов. Помогай пользователям понять как работать с панелью аналитики, создавать отчеты, анализировать данные проектов. Отвечай кратко и по делу на русском языке."
-                            }
-                        ]
-
-                        # Добавляем историю последних сообщений (для контекста)
-                        for msg in st.session_state.chat_history[-4:]:
-                            messages.append({
-                                "role": msg["role"],
-                                "content": msg["content"]
-                            })
-
-                        # Добавляем новый вопрос
-                        messages.append({
-                            "role": "user",
-                            "content": question
-                        })
-
-                        # Запрос к AI через chat completion
-                        response = client.chat_completion(
-                            messages=messages,
-                            model="mistralai/Mistral-7B-Instruct-v0.2",
-                            max_tokens=300,
-                            temperature=0.7
-                        )
-
-                        # Получаем ответ
-                        answer = response.choices[0].message.content
-
-                        # Сохраняем в историю
-                        st.session_state.chat_history.append({
-                            "role": "user",
-                            "content": question
-                        })
-                        st.session_state.chat_history.append({
-                            "role": "assistant",
-                            "content": answer
-                        })
-
-                        st.rerun()
-
-                except Exception as e:
-                    st.error(f"❌ Ошибка связи с AI: {str(e)}")
-                    st.info("Возможные причины:\n- Проверьте токен HF_TOKEN в Secrets\n- Попробуйте другую модель")
-
-
-
-
     # Боковая панель с меню навигации
     render_sidebar_menu(current_page="reports")
 
