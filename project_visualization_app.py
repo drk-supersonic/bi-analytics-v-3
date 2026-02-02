@@ -6645,31 +6645,6 @@ def main():
             </div>
         """, unsafe_allow_html=True)
 
-        # ========== AI БЛОК ==========
-        st.markdown("""
-        <div class='dragonBlock'>
-            <section>
-                <div>
-                    <section>
-                        <div>
-                            <section>
-                                <div class='ai-anchor'>
-        """, unsafe_allow_html=True)
-
-        # ai_assistant.render_ai_assistant()
-
-        st.markdown("""
-                                </div>
-                            </section>
-                        </div>
-                    </section>
-                </div>
-            </section>
-        </div>
-        """, unsafe_allow_html=True)
-
-        # ========== AI БЛОК ==========
-
         # Инициализация переменных для восстановления пароля
         if 'reset_mode' not in st.session_state:
             st.session_state.reset_mode = False
@@ -7021,7 +6996,30 @@ def main():
     #
     # st.markdown("""</div></section></div></section></div></section></div>""", unsafe_allow_html=True)
 
+    # ========== AI БЛОК ==========
+    st.markdown("""
+    <div class='dragonBlock'>
+        <section>
+            <div>
+                <section>
+                    <div>
+                        <section>
+                            <div class='ai-anchor'>
+    """, unsafe_allow_html=True)
 
+    ai_assistant.render_ai_assistant()
+
+    st.markdown("""
+                            </div>
+                        </section>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ========== AI БЛОК ==========
 
     st.markdown('<h1 class="main-header">📊 Панель аналитики проектов</h1>', unsafe_allow_html=True)
 
