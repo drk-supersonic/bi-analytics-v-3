@@ -4,7 +4,7 @@
     /* Цвета фона темы */
     --themeBackgroundColor: hsl(190,40%,98%);
     --themeBackgroundColor: hsl(210,67%,96%);
-    --themeBackgroundColor: hsl(216,28%,7%);
+    /* --themeBackgroundColor: hsl(216,28%,7%); */
     /* --themeBackgroundColor: #0e1117;      */
 
     --sidebarBackgroundColor: hsl(214,25%,11%);
@@ -277,8 +277,7 @@ input{
     /* font: 300 normal .884rem/1.4 'Inter', sans-serif;
     letter-spacing: .008em;
     text-indent: 0; */
-    /* color: hsl(215,41%,8%) !important; */
-    color: hsl(210,67%,96%) !important;
+    color: hsl(215,41%,8%) !important;
     background-color: transparent !important;
     overflow: none !important;
     outline: none !important;
